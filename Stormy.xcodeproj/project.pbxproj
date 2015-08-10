@@ -13,6 +13,8 @@
 		CEF509111B7847BA006A5314 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEF509101B7847BA006A5314 /* Images.xcassets */; };
 		CEF509141B7847BA006A5314 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEF509121B7847BA006A5314 /* LaunchScreen.xib */; };
 		CEF509201B7847BA006A5314 /* StormyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5091F1B7847BA006A5314 /* StormyTests.swift */; };
+		CEF5092C1B784DFB006A5314 /* CurrentWeather.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEF5092B1B784DFB006A5314 /* CurrentWeather.plist */; };
+		CEF5092E1B784E4F006A5314 /* CurrentWeather.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5092D1B784E4F006A5314 /* CurrentWeather.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,8 @@
 		CEF509191B7847BA006A5314 /* StormyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StormyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF5091E1B7847BA006A5314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEF5091F1B7847BA006A5314 /* StormyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StormyTests.swift; sourceTree = "<group>"; };
+		CEF5092B1B784DFB006A5314 /* CurrentWeather.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = CurrentWeather.plist; sourceTree = "<group>"; };
+		CEF5092D1B784E4F006A5314 /* CurrentWeather.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentWeather.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,7 @@
 				CEF509091B7847BA006A5314 /* AppDelegate.swift */,
 				CEF5090B1B7847BA006A5314 /* ViewController.swift */,
 				CEF5090D1B7847BA006A5314 /* Main.storyboard */,
+				CEF5092D1B784E4F006A5314 /* CurrentWeather.swift */,
 				CEF509101B7847BA006A5314 /* Images.xcassets */,
 				CEF509121B7847BA006A5314 /* LaunchScreen.xib */,
 				CEF509071B7847BA006A5314 /* Supporting Files */,
@@ -90,6 +95,7 @@
 		CEF509071B7847BA006A5314 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CEF5092B1B784DFB006A5314 /* CurrentWeather.plist */,
 				CEF509081B7847BA006A5314 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -193,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEF5090F1B7847BA006A5314 /* Main.storyboard in Resources */,
+				CEF5092C1B784DFB006A5314 /* CurrentWeather.plist in Resources */,
 				CEF509141B7847BA006A5314 /* LaunchScreen.xib in Resources */,
 				CEF509111B7847BA006A5314 /* Images.xcassets in Resources */,
 			);
@@ -213,6 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEF5090C1B7847BA006A5314 /* ViewController.swift in Sources */,
+				CEF5092E1B784E4F006A5314 /* CurrentWeather.swift in Sources */,
 				CEF5090A1B7847BA006A5314 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
