@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CEC6D9961B7D6BAE00EA8B0D /* NetworkOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC6D9951B7D6BAE00EA8B0D /* NetworkOperation.swift */; };
+		CEC6D9981B7D939400EA8B0D /* ForecastService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC6D9971B7D939400EA8B0D /* ForecastService.swift */; };
 		CEF5090A1B7847BA006A5314 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF509091B7847BA006A5314 /* AppDelegate.swift */; };
 		CEF5090C1B7847BA006A5314 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5090B1B7847BA006A5314 /* ViewController.swift */; };
 		CEF5090F1B7847BA006A5314 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEF5090D1B7847BA006A5314 /* Main.storyboard */; };
@@ -28,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CEC6D9951B7D6BAE00EA8B0D /* NetworkOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkOperation.swift; sourceTree = "<group>"; };
+		CEC6D9971B7D939400EA8B0D /* ForecastService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForecastService.swift; sourceTree = "<group>"; };
 		CEF509041B7847BA006A5314 /* Stormy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stormy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEF509081B7847BA006A5314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CEF509091B7847BA006A5314 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +89,8 @@
 				CEF5090B1B7847BA006A5314 /* ViewController.swift */,
 				CEF5090D1B7847BA006A5314 /* Main.storyboard */,
 				CEF5092D1B784E4F006A5314 /* CurrentWeather.swift */,
+				CEC6D9951B7D6BAE00EA8B0D /* NetworkOperation.swift */,
+				CEC6D9971B7D939400EA8B0D /* ForecastService.swift */,
 				CEF509101B7847BA006A5314 /* Images.xcassets */,
 				CEF509121B7847BA006A5314 /* LaunchScreen.xib */,
 				CEF509071B7847BA006A5314 /* Supporting Files */,
@@ -219,8 +225,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEC6D9961B7D6BAE00EA8B0D /* NetworkOperation.swift in Sources */,
 				CEF5090C1B7847BA006A5314 /* ViewController.swift in Sources */,
 				CEF5092E1B784E4F006A5314 /* CurrentWeather.swift in Sources */,
+				CEC6D9981B7D939400EA8B0D /* ForecastService.swift in Sources */,
 				CEF5090A1B7847BA006A5314 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -417,6 +425,7 @@
 				CEF509251B7847BA006A5314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		CEF509261B7847BA006A5314 /* Build configuration list for PBXNativeTarget "StormyTests" */ = {
 			isa = XCConfigurationList;
@@ -425,6 +434,7 @@
 				CEF509281B7847BA006A5314 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
