@@ -17,6 +17,8 @@ class WeeklyTableViewController: UITableViewController {
     private let forecastAPIKey = "75e43af5d6a0f69e697a7f47f1fa16f5"
     // Rio de Janeiro Coordinates
     let coordinate: (lat: Double, long: Double) = (-22.9122,-43.1750)
+    
+    var weeklyWeather: [DailyWeather] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,6 +44,9 @@ class WeeklyTableViewController: UITableViewController {
         // Set table view's background view property
         tableView.backgroundView = BackgroundView()
         
+        // Set custom height for table view row
+        tableView.rowHeight = 64
+        
         //Change the font and size of nav bar text
         if let navBarFont = UIFont(name: "HelveticaNeue-Thin", size: 20.0){
             let navBarAttributesDictionary: [NSObject: AnyObject]? = [
@@ -51,85 +56,87 @@ class WeeklyTableViewController: UITableViewController {
             navigationController?.navigationBar.titleTextAttributes = navBarAttributesDictionary
         }
         
-        
+        // Position refresh control above background view
+        refreshControl?.layer.zPosition = tableView.backgroundView!.layer.zPosition + 1
+        refreshControl?.tintColor = UIColor.whiteColor()
     }
+    
+    @IBAction func refreshWeather() {
+        retrieveWeatherForecast()
+        refreshControl?.endRefreshing()
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showDaily" {
+            if let indexPath = tableView.indexPathForSelectedRow() {
+                let dailyWeather = weeklyWeather[indexPath.row]
+                
+                (segue.destinationViewController as! ViewController).dailyWeather = dailyWeather
+            }
+        }
+    }
+    
 
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
         // Return the number of sections.
-        return 0
+        return 1
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Forecast"
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return 0
+        return weeklyWeather.count
     }
-
-    /*
+    
+    // Reusable Cell Method
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-
-        // Configure the cell...
-
+        let cell = tableView.dequeueReusableCellWithIdentifier("WeatherCell") as! DailyWeatherTableViewCell
+        
+        // Setting info to cell
+        let dailyWeather = weeklyWeather[indexPath.row]
+        if let maxTemp = dailyWeather.maxTemperature {
+            cell.temperatureLabel.text = "\(maxTemp)º"
+        }
+        cell.weatherIcon.image = dailyWeather.icon
+        cell.dayLabel.text = dailyWeather.day
+        
         return cell
     }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
+    
+    // MARK: - Delegate Methods
+    
+    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor(red: 170/255.0, green: 131/255.0, blue: 224/225.0, alpha: 1.0)
+        
+        if let header = view as? UITableViewHeaderFooterView {
+            header.textLabel.font = UIFont(name: "HelveticaNeue-Thin", size: 14.0)
+            header.textLabel.textColor = UIColor.whiteColor()
+        }
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
+        var cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.contentView.backgroundColor = UIColor(red: 165/255.0, green: 142/255.0, blue: 203/255.0, alpha: 1.0)
+        let highlightView = UIView()
+        highlightView.backgroundColor = UIColor(red: 165/255.0, green: 142/255.0, blue: 203/255.0, alpha: 1.0)
+        cell?.selectedBackgroundView = highlightView
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     // MARK: - Weather Fetching
     
     func retrieveWeatherForecast() {
         let forecastService = ForecastService(APIKey: forecastAPIKey)
         forecastService.getForecast(coordinate.lat, long: coordinate.long){
-            (let currently) in
-            if let currentWeather = currently {
+            (let forecast) in
+            if let weatherForecast = forecast,
+                let currentWeather = weatherForecast.currentWeather {
                 // Update UI
                 // Using GCD API
                 dispatch_async(dispatch_get_main_queue()){
@@ -158,6 +165,14 @@ class WeeklyTableViewController: UITableViewController {
                         self.currentWeatherSummary?.text = summary
                     }*/
                     
+                    self.weeklyWeather = weatherForecast.weekly
+                    
+                    if let highTemp = self.weeklyWeather.first?.maxTemperature,
+                        let lowTemp = self.weeklyWeather.first?.minTemperature {
+                            self.currentTemperatureRangeLabel?.text = "↑\(highTemp)º↓\(lowTemp)º"
+                    }
+                    
+                    self.tableView.reloadData()
                 }
             }
         }
