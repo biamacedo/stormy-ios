@@ -9,22 +9,61 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet weak var currentTemperatureLabel: UILabel?
-    @IBOutlet weak var currentHumidityLabel: UILabel?
-    @IBOutlet weak var currentPrecipitationLabel: UILabel?
-    @IBOutlet weak var currentWeatherIcon: UIImageView?
-    @IBOutlet weak var currentWeatherSummary: UILabel?
-    @IBOutlet weak var refreshButton: UIButton?
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView?
     
-    private let forecastAPIKey = "75e43af5d6a0f69e697a7f47f1fa16f5"
-    // Rio de Janeiro Coordinates
-    let coordinate: (lat: Double, long: Double) = (-22.9122,-43.1750)
+    var dailyWeather: DailyWeather?{
+        didSet {
+            configureView()
+        }
+    }
+    
+    @IBOutlet weak var weatherIcon: UIImageView?
+    @IBOutlet weak var summaryLabel: UILabel?
+    @IBOutlet weak var sunriseTimeLabel: UILabel?
+    @IBOutlet weak var sunsetTimeLabel: UILabel?
+    
+    @IBOutlet weak var lowTemperatureLabel: UILabel?
+    @IBOutlet weak var highTemperatureLabel: UILabel?
+    @IBOutlet weak var precipitationLabel: UILabel?
+    @IBOutlet weak var humidiyLabel: UILabel?
+    
+    func configureView() {
+        if let weather = dailyWeather {
+            self.title = weather.day
+            
+            // Update UI with information from the data model
+            weatherIcon?.image = weather.largeIcon
+            summaryLabel?.text = weather.summary
+            sunriseTimeLabel?.text = weather.sunriseTime
+            sunsetTimeLabel?.text = weather.sunsetTime
+            
+            if let lowTemp = weather.minTemperature,
+                let highTemp = weather.maxTemperature,
+                let rain = weather.precipChance,
+                let humidity = weather.humidity {
+                    lowTemperatureLabel?.text = "\(lowTemp)º"
+                    highTemperatureLabel?.text = "\(highTemp)º"
+                    precipitationLabel?.text = "\(rain)%"
+                    humidiyLabel?.text = "\(humidity)%"
+            }
+        }
+        
+        // Configure nav bar back button
+        //Change the font and size of nav bar text
+        if let buttonFont = UIFont(name: "HelveticaNeue-Thin", size: 20.0){
+            let barButtonAttributesDictionary: [NSObject: AnyObject]? = [
+                NSForegroundColorAttributeName: UIColor.whiteColor(),
+                NSFontAttributeName: buttonFont
+            ]
+            UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributesDictionary, forState: .Normal)
+        }
+        
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        retrieveWeatherForecast()
+        configureView()
 
         /****************** Fetching data asyncronously ***************************************
         let baseURL = NSURL(string: "https://api.forecast.io/forecast/\(forecastAPIKey)/")
@@ -73,63 +112,10 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func retrieveWeatherForecast() {
-        let forecastService = ForecastService(APIKey: forecastAPIKey)
-        forecastService.getForecast(coordinate.lat, long: coordinate.long){
-            (let currently) in
-            if let currentWeather = currently {
-                // Update UI
-                // Using GCD API
-                dispatch_async(dispatch_get_main_queue()){
-                    // Execute closure
-                    // Code that executes on the main thread, because we are adding it to the main thread queue
-                    
-                    if let temperature = currentWeather.temperature {
-                        // When you refer to a stored property from inside a closure
-                        // you always have to use the keyword self
-                        self.currentTemperatureLabel?.text = "\(temperature)º"
-                    }
-                    
-                    if let humidity = currentWeather.humidity {
-                        self.currentHumidityLabel?.text = "\(humidity)%"
-                    }
-                    
-                    if let precipitation = currentWeather.precipProbability {
-                        self.currentPrecipitationLabel?.text = "\(precipitation)%"
-                    }
-                    
-                    if let icon = currentWeather.icon {
-                        self.currentWeatherIcon?.image = icon
-                    }
-                    
-                    if let summary = currentWeather.summary {
-                        self.currentWeatherSummary?.text = summary
-                    }
-                    
-                    self.toggleRefreshAnimation(false)
-                }
-            }
-        }
-    }
-
-    @IBAction func refreshWeather() {
-        toggleRefreshAnimation(true)
-        retrieveWeatherForecast()
-    }
-    
-    func toggleRefreshAnimation(on: Bool) {
-        refreshButton?.hidden = on
-        if on {
-            activityIndicator?.startAnimating()
-        } else {
-            activityIndicator?.stopAnimating()
-        }
-    }
-    
-    // Used for future error handling
+    /*// Used for future error handling
     func errorAlert(errorMessage: String) {
         let alert = UIAlertController(title: "Error Message", message: "Error: \(errorMessage)", preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "Click", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
-    }
+    }*/
 }
